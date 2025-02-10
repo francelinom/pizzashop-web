@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,9 +17,21 @@ export function SignIn() {
     const { register, handleSubmit, formState } = useForm<SignInForm>()
 
     async function handleSingnIn(data: SignInForm) {
-        console.log(data)
+        try {
+            console.log(data)
 
-        await new Promise(resolve => setTimeout(resolve, 1000))
+            await new Promise(resolve => setTimeout(resolve, 1000))
+
+            toast.success('Enviamos um e-mail para seu e-mail.', {
+                action: {
+                    label: 'Reenviar',
+                    onClick: () => handleSingnIn(data)
+                }
+            })
+        } catch (error) {
+            toast.error('Ops! Algo deu errado.')
+        }
+
     }
 
     return (
