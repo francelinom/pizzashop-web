@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Link } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
+import { signIn } from '@/api/sign-in'
 
 const signInForm = z.object({
     email: z.string().email(),
@@ -17,11 +19,13 @@ type SignInForm = z.infer<typeof signInForm>
 export function SignIn() {
     const { register, handleSubmit, formState } = useForm<SignInForm>()
 
+    const { mutateAsync: authenticate } = useMutation({
+        mutationFn: signIn
+    })
+
     async function handleSingnIn(data: SignInForm) {
         try {
-            console.log(data)
-
-            await new Promise(resolve => setTimeout(resolve, 1000))
+            await authenticate({ email: data.email })
 
             toast.success('Enviamos um e-mail para seu e-mail.', {
                 action: {
@@ -46,7 +50,6 @@ export function SignIn() {
                         Novo Estabelecimento
                     </Link>
                 </Button>
-
 
                 <div className="flex w-[350px] flex-col justify-center gap-6">
                     <div className="flex flex-col gap-2 text-center">
