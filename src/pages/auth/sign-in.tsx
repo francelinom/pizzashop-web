@@ -20,7 +20,7 @@ export function SignIn() {
     const [searchParams] = useSearchParams()
     const { register, handleSubmit, formState } = useForm<SignInForm>({
         defaultValues: {
-            email: searchParams.get('email')
+            email: searchParams.get('email') || '',
         }
     })
 
