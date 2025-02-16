@@ -1,14 +1,17 @@
 import { Building, ChevronDown, LogOut } from "lucide-react";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getProfile } from "@/api/get-profile";
 import { getManagedRestaurant } from "@/api/get-managed-restaurant";
 import { Skeleton } from "../ui/skeleton";
 import { Dialog, DialogTrigger } from "../ui/dialog";
 import { StoreProfileDialog } from "../store-profile-dialog";
+import { signOut } from "@/api/sign-out";
+import { replace, useNavigate } from "react-router-dom";
 
 export function AccountMenu() {
+    const natigate = useNavigate()
     const { data: profile, isLoading: isLoadingProfile } = useQuery({
         queryKey: ['profile'],
         queryFn: getProfile,
@@ -19,6 +22,13 @@ export function AccountMenu() {
         queryKey: ['managed-restaurant'],
         queryFn: getManagedRestaurant,
         staleTime: Infinity
+    })
+
+    const { mutateAsync: signOutFn, isPeding: isSigningOut } = useMutation({
+        mutationFn: signOut,
+        onSuccess: () => {
+            natigate('/sign-in', { replace: true })
+        }
     })
 
     return (
@@ -54,9 +64,11 @@ export function AccountMenu() {
                         </DropdownMenuItem>
                     </DialogTrigger>
 
-                    <DropdownMenuItem className="text-rose-500 dark:text-rose-400">
-                        <LogOut className="w-4 h-4 mr-2" />
-                        <span>Sair</span>
+                    <DropdownMenuItem asChild className="text-rose-500 dark:text-rose-400" disabled={isSigningOut} onClick={() => signOutFn()}>
+                        <button onClick={() => signOutFn()} className="w-full">
+                            <LogOut className="w-4 h-4 mr-2" />
+                            <span>Sair</span>
+                        </button>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
