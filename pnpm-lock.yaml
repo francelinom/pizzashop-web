@@ -130,7 +130,7 @@ importers:
         specifier: ^10.0.0
         version: 10.0.0(eslint@8.57.1)
       happy-dom:
-        specifier: ^13.1.4
+        specifier: ^13.10.1
         version: 13.10.1
       msw:
         specifier: ^2.1.0
