@@ -1,7 +1,6 @@
 import { render } from "@testing-library/react";
 import { NavLink } from "./nav-link";
 import { MemoryRouter } from "react-router-dom";
-import exp from "constants";
 
 describe("NavLink", () => {
     it("should highlight the nav link when is the current page link", () => {
